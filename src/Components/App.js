@@ -44,11 +44,9 @@ export default class App extends React.Component {
         });
     }
     editingContact() {
-        console.log("editing " + this.state.selectedContact.ID);
         this.setState({ editSelectedContact: true, redirect: false });
     }
     newContact() {
-        console.log("creating new contact");
         this.setState({
             creatingNewContact: true,
             selectedContact: undefined,
@@ -60,7 +58,6 @@ export default class App extends React.Component {
         if (this.state.selectedContact) {
             updateContact(contact)
                 .then(status => {
-                    console.log("updated");
                     this.setState({
                         selectedContact: undefined,
                         editSelectedContact: false,
@@ -69,7 +66,6 @@ export default class App extends React.Component {
                         redirect: true
                     });
                     this.setState({ updateData: true });
-                    console.log(this.state);
                 })
                 .catch(error => {
                     alert(error);
@@ -97,7 +93,6 @@ export default class App extends React.Component {
             deleteContact(this.state.selectedContact)
                 .then(status => {
                     object.setState({ selectedContact: undefined, updateData: true });
-                    console.log(object.state);
                 })
                 .catch((error) => {
                     alert("something went wrong\nRequest failed");
@@ -106,7 +101,6 @@ export default class App extends React.Component {
         }
     }
     cancelAction() {
-        console.log("cancelling action");
         this.setState({
             editSelectedContact: false,
             creatingNewContact: false,
@@ -114,7 +108,6 @@ export default class App extends React.Component {
         });
     }
     homeClicked() {
-        console.log("home clicked");
         this.setState({
             creatingNewContact: false,
             selectedContact: undefined,
@@ -122,12 +115,9 @@ export default class App extends React.Component {
         });
     }
     componentDidMount() {
-        console.log("fetching");
         fetchAllContacts()
             .then((data) => {
-                console.log(data);
                 this.setState({ contactsList: data });
-                console.log(data);
             })
             .catch((error) => {
                 alert(error);

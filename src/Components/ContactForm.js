@@ -1,46 +1,66 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { Redirect, useParams } from "react-router-dom";
 import { validateForm } from "../validation";
 import {
-  fetchAllContacts,
+  addContact,
+  getContactWithId,
+  updateContact
 } from "../Services/ContactServices";
 
 export function ContactForm(props) {
   let { id } = useParams();
-  let [selectedContact, setSelectedContact] = useState({ undefined });
-  useEffect(() => {
-    fetchAllContacts()
-      .then((data) => {
-        setSelectedContact(data.find(contact => contact.ID == id));
-        setSelectedContact({Name:"dfasdfasdfadsfadsfadsf"})
-      })
-      .catch((error) => {
-        alert(error);
-      });
+  let [selectedContact, setSelectedContact] = useState({
+    ID: undefined,
+    Name: undefined,
+    Phone: undefined,
+    Landline: undefined,
+    Email: undefined,
+    Url: undefined,
+    Address: undefined
   });
-  if (typeof selectedContact === "undefined") {
-    return (
-      <div>
-        <h1>
-          Page not found... {id}
-        </h1>
-      </div>
-    );
-  }
+  console.log(id);
+  useEffect(() => {
+    if (id !== undefined) {
+      getContactWithId(id)
+        .then((data) => {
+          setSelectedContact(data);
+        })
+        .catch((error) => {
+          alert(error);
+        });
+    }
+  });
   function handleChange(event) {
     let prop = event.target.id;
-    // this.setState({ [prop]: event.target.value });
-    // console.log(this.state);
+    Object.keys(selectedContact).map(key => {
+      if (key == prop) {
+        selectedContact[key] = event.target.value;
+      }
+    });
   }
   function saveContact() {
-    console.log("saving");
+    if (validateForm()) {
+      if (id) {
+        updateContact(selectedContact)
+        .then(response=>console.log(response))
+        .catch(error=>console.log(error));
+      } else {
+        addContact(selectedContact)
+          .then(response => response.json())
+          .then(data => {
+            id = data;
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }
+      <Redirect to={"contacts/" + id} />
+    }
   }
   return (
     <div className="form-container">
       <form
         className="form"
-        action="#"
-        onSubmit={saveContact}
       >
         <div className="table">
           <div className="tr">
@@ -50,7 +70,7 @@ export function ContactForm(props) {
                 type="text"
                 className="name"
                 id="Name"
-                defaultValue={selectedContact.Name}
+                defaultValue={selectedContact === undefined ? "" : selectedContact.Name}
                 onChange={handleChange}
                 placeholder="Enter your name"
               />
@@ -64,7 +84,7 @@ export function ContactForm(props) {
               <input
                 type="text"
                 id="Email"
-                value={selectedContact.Email}
+                defaultValue={selectedContact === undefined ? "" : selectedContact.Email}
                 placeholder="Enter email address"
                 className="email"
                 onChange={handleChange}
@@ -80,7 +100,7 @@ export function ContactForm(props) {
                 type="text"
                 id="Phone"
                 placeholder="Enter phone number"
-                value={selectedContact.Phone}
+                defaultValue={selectedContact === undefined ? "" : selectedContact.Phone}
                 className="phone" onChange={handleChange}
               />
               <span className="req">*</span>
@@ -95,7 +115,10 @@ export function ContactForm(props) {
                 id="Landline"
                 placeholder="Enter landline number"
                 className="landLine"
-                value={selectedContact.Landline}
+                defaultValue={selectedContact === undefined ?
+                  "" : (selectedContact.Landline === undefined || selectedContact.Landline === null ?
+                    "" : selectedContact.Landline)
+                }
                 onChange={handleChange}
               />
             </div>
@@ -109,7 +132,7 @@ export function ContactForm(props) {
                 id="Url"
                 placeholder="Enter website address"
                 className="website"
-                value={selectedContact.Url}
+                defaultValue={selectedContact === undefined ? "" : selectedContact.Url}
                 onChange={handleChange}
               />
               <span className="req">*</span>
@@ -127,7 +150,10 @@ export function ContactForm(props) {
                 id="Address"
                 className="address"
                 placeholder="Enter address"
-                value={selectedContact.Address}
+                defaultValue={selectedContact === undefined ?
+                  "" : (selectedContact.Address === undefined || selectedContact.Address === null ?
+                    "" : selectedContact.Address)
+                }
                 onChange={handleChange}
               >
               </textarea>
@@ -187,11 +213,9 @@ export function ContactForm(props) {
 //   handleChange(event) {
 //     let prop = event.target.id;
 //     this.setState({ [prop]: event.target.value });
-//     console.log(this.state);
 //   }
 //   saveContact() {
 //     if (validateForm()) {
-//       console.log(this.props.contact);
 //       if (this.props.contact) {
 //         var contact = {
 //           ID: this.state.ID,

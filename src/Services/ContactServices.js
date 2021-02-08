@@ -1,12 +1,12 @@
 var fetchUrl = 'https://localhost:44325/api/contacts/';
 export function updateContact(contact) {
   return fetch(fetchUrl + contact.ID, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(contact)
-    })
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(contact)
+  })
     .then(response => {
       return response.ok;
     })
@@ -17,12 +17,12 @@ export function updateContact(contact) {
 
 export function addContact(contact) {
   return fetch(fetchUrl, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(contact)
-    })
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(contact)
+  })
     .then(response => {
       return response.ok;
     })
@@ -41,13 +41,22 @@ export function fetchAllContacts() {
       console.log(error)
     });
 }
-
+export function getContactWithId(id) {
+  return fetch(fetchUrl + id)
+    .then(response => response.json())
+    .then(data => {
+      return data;
+    })
+    .catch((error) => {
+      console.log(error)
+    });
+}
 export function deleteContact(viewingContact) {
   console.log("deleting");
   console.log(viewingContact);
   return fetch(fetchUrl + viewingContact.ID, {
-      method: "DELETE"
-    })
+    method: "DELETE"
+  })
     .then(response => {
       return response.ok;
     })

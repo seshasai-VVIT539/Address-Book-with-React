@@ -12,12 +12,9 @@ export class Contacts extends React.Component {
     };
   }
   componentDidMount() {
-    console.log("fetching");
     fetchAllContacts()
       .then((data) => {
-        console.log(data);
         this.setState({ contactsList: data });
-        console.log(data);
       })
       .catch((error) => {
         alert(error);

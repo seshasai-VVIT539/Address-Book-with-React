@@ -3,9 +3,7 @@ export function validateForm() {
   var valid = validateName();
   valid = validateEmail() && valid;
   valid = validatePhone() && valid;
-  //valid = validateLandLine() && valid;
   valid = validateUrl() && valid;
-  // valid = validateAddress() && valid;
   return valid;
 }
 

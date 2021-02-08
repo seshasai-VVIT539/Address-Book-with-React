@@ -42,7 +42,6 @@ export function ShowContact(props) {
           <Link to={toEdit}>
             <button
               className="option"
-              onClick={() => { props.handleEdit() }}
             >
               <i className="fa fa-edit"></i> Edit
                   </button>
