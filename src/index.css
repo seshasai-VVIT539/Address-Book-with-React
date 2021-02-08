@@ -1,0 +1,116 @@
+body {
+    margin: 0;
+}
+
+#header {
+  font-size: 48px;
+  color: white;
+  width: inherit;
+  font-family: "Century Gothic";
+  background-color: #3399CC;
+  margin-bottom: 0px;
+  margin-top: 0px;
+  padding: 10px 0px 17px 20px;
+  height: 66px;
+  font-weight: 400;
+}
+.navbar {
+  font-size: 15px;
+  font-weight: bold;
+  height: 30px;
+  background-color: #333333;
+  font-family: 'Noto Sans', sans-serif;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+}
+a{
+  text-decoration: none;
+  color: inherit;
+}
+.options {
+  padding-left: 8px;
+  font-weight: 600;
+  display: flex;
+}
+.option {
+  cursor: pointer;
+  padding: 6px 14px;
+  display: inline;
+  border-left: 3px solid #333333;
+  color: white;
+  text-decoration: none;
+}
+.container{
+  display: flex;
+  font-family: "Century Gothic";
+}
+#contacts{
+  text-align: center;
+  /* width: 10%; */
+  overflow-x: hidden;
+  margin: 10px 50px;
+}
+.contact{
+  padding:10px 30px;
+  border: 1px solid rgba(0,0,0,0.2);
+  cursor: pointer;
+}
+.view-details{
+  height: fit-content;
+  width: 40%;
+  margin:100px 0 0 5%;
+  border: 1px solid rgba(0,0,0,0.5);
+}
+.details-header{
+  display: flex;
+  justify-content: space-between;
+}
+.details-heading{
+  font-size: 40px;
+  width: 55%;
+  overflow-x: hidden;
+  margin:0 25px;
+}
+.details-header .options{
+   display: flex;
+   width: 32%;
+   margin-right: 15px;
+ }
+.details-header .options {
+  padding-top: 16px;
+  height: 30px;
+}
+.details-header .options .option{
+  color: black;
+  margin:0 3px;
+  border-style: solid;
+}
+.details-option{
+  padding: 0 10px;
+  cursor: pointer;
+}
+.table{
+  display: table;
+  padding: 20px;
+}
+.tr{
+  display: table-row;
+
+}
+.td{
+  display: table-cell;
+  vertical-align: middle;
+  padding: 5px;
+}
+.req{
+  color: red;
+}
+#nameError, #mailError, #phoneError, #landLineError, #websiteError, #addressError {
+  color: red;
+  padding-top: 5px;
+  font-size: 12px;
+}
+.form button{
+  margin-left: 30px;
+}
