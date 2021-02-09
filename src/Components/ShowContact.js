@@ -4,20 +4,26 @@ import {
 } from "react";
 import {
   Link,
+  useHistory,
   useParams
 } from "react-router-dom";
 import {
-  fetchAllContacts,
+  fetchAllContacts, getContactWithId,
 } from "../Services/ContactServices";
 
 export function ShowContact(props) {
   let { id } = useParams();
+  const history = useHistory();
   const [selectedContact, setSelectedContact] = useState({ undefined });
   const toEdit = "/contacts/form/" + id;
   useEffect(() => {
-    fetchAllContacts()
+    getContactWithId(id)
       .then((data) => {
-        setSelectedContact(data.find(contact => contact.ID == id));
+        if (data) {
+          setSelectedContact(data);
+        } else {
+          history.push("/contacts/");
+        }
       })
       .catch((error) => {
         alert(error);

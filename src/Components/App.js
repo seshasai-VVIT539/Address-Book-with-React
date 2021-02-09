@@ -146,22 +146,30 @@ export default class App extends React.Component {
                         homeClicked={this.homeClicked}
                     />
                     <div className="container">
-                        <Contacts
-                            contactsList={this.state.contactsList}
-                            handleEdit={this.handleEdit}
-                            contactClicked={this.contactClicked}
-                            saveContact={this.saveContact}
-                            cancelAction={this.cancelAction}
-                            deleteContact={this.deleteContact}
-                        />
-
                         <Switch>
-                            <Route exact path="/contacts" />
+                            <Route exact path="/contacts" >
+                                <Contacts
+                                    contactsList={this.state.contactsList}
+                                    handleEdit={this.handleEdit}
+                                    contactClicked={this.contactClicked}
+                                    saveContact={this.saveContact}
+                                    cancelAction={this.cancelAction}
+                                    deleteContact={this.deleteContact}
+                                />
+                            </Route>
                             <Route exact path="/">
                                 <Redirect to="/contacts" />
                             </Route>
                             {this.state.redirect && <Redirect to="/contacts" />}
                             <Route exact path="/contacts/form">
+                                <Contacts
+                                    contactsList={this.state.contactsList}
+                                    handleEdit={this.handleEdit}
+                                    contactClicked={this.contactClicked}
+                                    saveContact={this.saveContact}
+                                    cancelAction={this.cancelAction}
+                                    deleteContact={this.deleteContact}
+                                />
                                 <ContactForm
                                     contact={this.state.selectedContact}
                                     saveContact={this.saveContact}
@@ -169,6 +177,14 @@ export default class App extends React.Component {
                                 />
                             </Route>
                             <Route exact path="/contacts/:id">
+                                <Contacts
+                                    contactsList={this.state.contactsList}
+                                    handleEdit={this.handleEdit}
+                                    contactClicked={this.contactClicked}
+                                    saveContact={this.saveContact}
+                                    cancelAction={this.cancelAction}
+                                    deleteContact={this.deleteContact}
+                                />
                                 <ShowContact
                                     contact={this.state.selectedContact}
                                     handleEdit={this.handleEdit}
@@ -176,6 +192,14 @@ export default class App extends React.Component {
                                 />;
                             </Route>
                             <Route exact path={"/contacts/form/:id"}>
+                                <Contacts
+                                    contactsList={this.state.contactsList}
+                                    handleEdit={this.handleEdit}
+                                    contactClicked={this.contactClicked}
+                                    saveContact={this.saveContact}
+                                    cancelAction={this.cancelAction}
+                                    deleteContact={this.deleteContact}
+                                />
                                 <ContactForm
                                     contact={this.state.selectedContact}
                                     saveContact={this.saveContact}

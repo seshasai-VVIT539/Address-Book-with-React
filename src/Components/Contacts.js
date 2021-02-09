@@ -20,6 +20,15 @@ export class Contacts extends React.Component {
         alert(error);
       });
   }
+  componentDidUpdate() {
+    fetchAllContacts()
+      .then((data) => {
+        this.setState({ contactsList: data });
+      })
+      .catch((error) => {
+        alert(error);
+      });
+  }
   render() {
     let contactList = this.state.contactsList;
     let contactsToDisplay;

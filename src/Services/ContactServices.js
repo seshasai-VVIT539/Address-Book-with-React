@@ -1,4 +1,5 @@
 var fetchUrl = 'https://localhost:44325/api/contacts/';
+
 export function updateContact(contact) {
   return fetch(fetchUrl + contact.ID, {
     method: 'PUT',
@@ -8,7 +9,7 @@ export function updateContact(contact) {
     body: JSON.stringify(contact)
   })
     .then(response => {
-      return response.ok;
+      return response.json();
     })
     .catch((error) => {
       console.error('Error:', error);
@@ -24,7 +25,7 @@ export function addContact(contact) {
     body: JSON.stringify(contact)
   })
     .then(response => {
-      return response.ok;
+      return response.json();
     })
     .catch((error) => {
       console.error('Error:', error);

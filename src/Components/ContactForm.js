@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Redirect, useParams } from "react-router-dom";
+import { Redirect, useHistory, useParams } from "react-router-dom";
 import { validateForm } from "../validation";
 import {
   addContact,
@@ -9,6 +9,7 @@ import {
 
 export function ContactForm(props) {
   let { id } = useParams();
+  const history = useHistory();
   let [selectedContact, setSelectedContact] = useState({
     ID: undefined,
     Name: undefined,
@@ -18,7 +19,6 @@ export function ContactForm(props) {
     Url: undefined,
     Address: undefined
   });
-  console.log(id);
   useEffect(() => {
     if (id !== undefined) {
       getContactWithId(id)
@@ -28,8 +28,18 @@ export function ContactForm(props) {
         .catch((error) => {
           alert(error);
         });
+    } else {
+      setSelectedContact({
+        ID: undefined,
+        Name: undefined,
+        Phone: undefined,
+        Landline: undefined,
+        Email: undefined,
+        Url: undefined,
+        Address: undefined
+      });
     }
-  });
+  }, [id]);
   function handleChange(event) {
     let prop = event.target.id;
     Object.keys(selectedContact).map(key => {
@@ -42,136 +52,135 @@ export function ContactForm(props) {
     if (validateForm()) {
       if (id) {
         updateContact(selectedContact)
-        .then(response=>console.log(response))
-        .catch(error=>console.log(error));
+          .then(response => {
+            let location = "/contacts/" + id;
+            history.push(location);
+          })
+          .catch(error => console.log(error));
       } else {
         addContact(selectedContact)
-          .then(response => response.json())
           .then(data => {
+            history.push("/contacts/" + data.ID);
             id = data;
           })
           .catch((error) => {
             console.log(error);
           });
       }
-      <Redirect to={"contacts/" + id} />
+
     }
   }
   return (
     <div className="form-container">
-      <form
-        className="form"
-      >
-        <div className="table">
-          <div className="tr">
-            <div className="td">Name :</div>
-            <div className="td">
-              <input
-                type="text"
-                className="name"
-                id="Name"
-                defaultValue={selectedContact === undefined ? "" : selectedContact.Name}
-                onChange={handleChange}
-                placeholder="Enter your name"
-              />
-              <span className="req">*</span>
-            </div>
-            <div id="nameError"></div>
+      <div className="table">
+        <div className="tr">
+          <div className="td">Name :</div>
+          <div className="td">
+            <input
+              type="text"
+              className="name"
+              id="Name"
+              defaultValue={selectedContact === undefined ? "" : selectedContact.Name}
+              onChange={handleChange}
+              placeholder="Enter your name"
+            />
+            <span className="req">*</span>
           </div>
-          <div className="tr">
-            <div className="td">Email :</div>
-            <div className="td">
-              <input
-                type="text"
-                id="Email"
-                defaultValue={selectedContact === undefined ? "" : selectedContact.Email}
-                placeholder="Enter email address"
-                className="email"
-                onChange={handleChange}
-              />
-              <span className="req">*</span>
-            </div>
-            <div id="mailError"></div>
-          </div>
-          <div className="tr">
-            <div className="td">Phone :</div>
-            <div className="td">
-              <input
-                type="text"
-                id="Phone"
-                placeholder="Enter phone number"
-                defaultValue={selectedContact === undefined ? "" : selectedContact.Phone}
-                className="phone" onChange={handleChange}
-              />
-              <span className="req">*</span>
-            </div>
-            <div id="phoneError"></div>
-          </div>
-          <div className="tr">
-            <div className="td">Landline :</div>
-            <div className="td">
-              <input
-                type="text"
-                id="Landline"
-                placeholder="Enter landline number"
-                className="landLine"
-                defaultValue={selectedContact === undefined ?
-                  "" : (selectedContact.Landline === undefined || selectedContact.Landline === null ?
-                    "" : selectedContact.Landline)
-                }
-                onChange={handleChange}
-              />
-            </div>
-            <div id="landLineError"></div>
-          </div>
-          <div className="tr">
-            <div className="td">Website :</div>
-            <div className="td">
-              <input
-                type="text"
-                id="Url"
-                placeholder="Enter website address"
-                className="website"
-                defaultValue={selectedContact === undefined ? "" : selectedContact.Url}
-                onChange={handleChange}
-              />
-              <span className="req">*</span>
-            </div>
-            <div id="websiteError"></div>
-          </div>
-          <div className="tr">
-            <div className="td">
-              Address :
-                  </div>
-            <div className="td">
-              <textarea
-                rows="4"
-                cols="22"
-                id="Address"
-                className="address"
-                placeholder="Enter address"
-                defaultValue={selectedContact === undefined ?
-                  "" : (selectedContact.Address === undefined || selectedContact.Address === null ?
-                    "" : selectedContact.Address)
-                }
-                onChange={handleChange}
-              >
-              </textarea>
-            </div>
-            <div id="addressError"></div>
-          </div>
+          <div id="nameError"></div>
         </div>
-        <button
-          onClick={saveContact}
-        >
-          Save
+        <div className="tr">
+          <div className="td">Email :</div>
+          <div className="td">
+            <input
+              type="text"
+              id="Email"
+              defaultValue={selectedContact === undefined ? "" : selectedContact.Email}
+              placeholder="Enter email address"
+              className="email"
+              onChange={handleChange}
+            />
+            <span className="req">*</span>
+          </div>
+          <div id="mailError"></div>
+        </div>
+        <div className="tr">
+          <div className="td">Phone :</div>
+          <div className="td">
+            <input
+              type="text"
+              id="Phone"
+              placeholder="Enter phone number"
+              defaultValue={selectedContact === undefined ? "" : selectedContact.Phone}
+              className="phone" onChange={handleChange}
+            />
+            <span className="req">*</span>
+          </div>
+          <div id="phoneError"></div>
+        </div>
+        <div className="tr">
+          <div className="td">Landline :</div>
+          <div className="td">
+            <input
+              type="text"
+              id="Landline"
+              placeholder="Enter landline number"
+              className="landLine"
+              defaultValue={selectedContact === undefined ?
+                "" : (selectedContact.Landline === undefined || selectedContact.Landline === null ?
+                  "" : selectedContact.Landline)
+              }
+              onChange={handleChange}
+            />
+          </div>
+          <div id="landLineError"></div>
+        </div>
+        <div className="tr">
+          <div className="td">Website :</div>
+          <div className="td">
+            <input
+              type="text"
+              id="Url"
+              placeholder="Enter website address"
+              className="website"
+              defaultValue={selectedContact === undefined ? "" : selectedContact.Url}
+              onChange={handleChange}
+            />
+            <span className="req">*</span>
+          </div>
+          <div id="websiteError"></div>
+        </div>
+        <div className="tr">
+          <div className="td">
+            Address :
+                  </div>
+          <div className="td">
+            <textarea
+              rows="4"
+              cols="22"
+              id="Address"
+              className="address"
+              placeholder="Enter address"
+              defaultValue={selectedContact === undefined ?
+                "" : (selectedContact.Address === undefined || selectedContact.Address === null ?
+                  "" : selectedContact.Address)
+              }
+              onChange={handleChange}
+            >
+            </textarea>
+          </div>
+          <div id="addressError"></div>
+        </div>
+      </div>
+      <button
+        onClick={saveContact}
+      >
+        Save
           </button>
-        <button
-        >
-          Cancel
+      <button
+      >
+        Cancel
           </button>
-      </form>
-    </div >
+    </div>
   );
 }
 
